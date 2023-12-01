@@ -1,5 +1,6 @@
 import argparse
 import json
+import re
 from ytmusicapi import YTMusic
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -34,7 +35,9 @@ tracks = ytmusic.get_playlist(yt_playlist_id)["tracks"]
 
 playlist = []
 for track in tracks:
-    playlist.append({"title": track["title"], "artist": track["artists"][0]["name"]})
+    cleaned_title = re.sub(r"\(.*?\)|\[.*?\]", "", track["title"])
+    cleaned_artist_name = re.sub(r"\(.*?\)|\[.*?\]", "", track["artists"][0]["name"])
+    playlist.append({"title": cleaned_title, "artist": cleaned_artist_name})
 
 SCOPE = (
     "user-read-private,user-read-email,playlist-modify-public,playlist-modify-private"
