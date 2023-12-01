@@ -1,13 +1,38 @@
+import argparse
 from ytmusicapi import YTMusic
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-YT_PLAYLIST_ID = "PLwjEXrvFo-2CqNmxxKYRIwObfWnn0soiA"
-SPOTIFY_PLAYLIST_NAME = "kpop"
+# Create the parser
+parser = argparse.ArgumentParser(description="songsync")
+
+# Add arguments
+parser.add_argument(
+    "--yt_playlist_id",
+    required=True,
+    type=str,
+    help="YT playlist ID to be converted to Spotify",
+)
+parser.add_argument(
+    "--spotify_playlist_name",
+    required=True,
+    type=str,
+    help="Name of Spotify playlist to create",
+)
+
+# Parse arguments
+args = parser.parse_args()
+
+# Accessing the arguments
+yt_playlist_id = args.yt_playlist_id
+spotify_playlist_name = args.spotify_playlist_name
+
+# YT_PLAYLIST_ID = "PLwjEXrvFo-2CqNmxxKYRIwObfWnn0soiA"
+# SPOTIFY_PLAYLIST_NAME = "kpop"
 
 ytmusic = YTMusic()
 
-tracks = ytmusic.get_playlist(YT_PLAYLIST_ID)["tracks"]
+tracks = ytmusic.get_playlist(yt_playlist_id)["tracks"]
 
 playlist = []
 for track in tracks:
@@ -20,7 +45,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=SCOPE))
 sp_user_id = sp.current_user()["id"]
 
 new_playlist_id = sp.user_playlist_create(
-    sp_user_id, SPOTIFY_PLAYLIST_NAME, public=False
+    sp_user_id, spotify_playlist_name, public=False
 )["id"]
 
 uris_to_add = []

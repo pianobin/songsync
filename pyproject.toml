@@ -2,7 +2,7 @@
 name = "songsync"
 version = "0.1.0"
 description = ""
-authors = ["shoji.moto <shoji.moto@lark.com>"]
+authors = ["pianobin <shoji@pianobin.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
