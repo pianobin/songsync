@@ -1,6 +1,3 @@
-import json
-import os
-import requests
 from ytmusicapi import YTMusic
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -15,17 +12,13 @@ playlist = []
 for track in tracks:
     playlist.append({"title": track["title"], "artist": track["artists"][0]["name"]})
 
-print("Imported songs from YT", playlist)
-
-# Get Spotify User ID
 scope = "user-read-private,user-read-email,playlist-modify-public,playlist-modify-private"
-
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 sp_user_id = sp.current_user()["id"]
-print("Spotify user ID", sp_user_id)
 
-new_playlist_id = sp.user_playlist_create(sp_user_id, 'kpop', public=False)["id"]
-print("Spotify playlist ID", new_playlist_id)
+SPOTIFY_PLAYLIST_NAME = 'kpop'
+
+new_playlist_id = sp.user_playlist_create(sp_user_id, SPOTIFY_PLAYLIST_NAME, public=False)["id"]
 
 uris_to_add = []
 songs_not_found = []
