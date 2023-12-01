@@ -1,4 +1,5 @@
 import argparse
+import json
 from ytmusicapi import YTMusic
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -67,7 +68,7 @@ for track in playlist:
     track_uri = track_items[0]["uri"]
     uris_to_add.append(track_uri)
 
-print("Adding ", uris_to_add)
+print("Adding", json.dumps(uris_to_add, indent=4, ensure_ascii=False))
 sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add)
 
-print("Couldn't find", songs_not_found)
+print("Couldn't find", json.dumps(songs_not_found, indent=4, ensure_ascii=False))

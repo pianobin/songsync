@@ -2,7 +2,7 @@
 
 Convert YT playlists to Spotify playlists
 
-## Installation
+## Setup
 
 Install poetry: https://python-poetry.org/docs/#installation
 
