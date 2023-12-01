@@ -19,6 +19,7 @@ poetry install
 ```
 
 Set the YouTube playlist ID of the songs you want to transfer to Spotify to YT_PLAYLIST_ID (to be cleaned up)
+Set the name of the Spotify playlist you want to create to SPOTIFY_PLAYLIST_NAME (to be cleaned up)
 
 Create a Spotify app by following the instructions in the Spotify Web API documentation: https://developer.spotify.com/documentation/web-api
 

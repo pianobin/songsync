@@ -3,6 +3,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 YT_PLAYLIST_ID = "PLwjEXrvFo-2CqNmxxKYRIwObfWnn0soiA"
+SPOTIFY_PLAYLIST_NAME = "kpop"
 
 ytmusic = YTMusic()
 
@@ -12,28 +13,32 @@ playlist = []
 for track in tracks:
     playlist.append({"title": track["title"], "artist": track["artists"][0]["name"]})
 
-scope = "user-read-private,user-read-email,playlist-modify-public,playlist-modify-private"
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+SCOPE = (
+    "user-read-private,user-read-email,playlist-modify-public,playlist-modify-private"
+)
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=SCOPE))
 sp_user_id = sp.current_user()["id"]
 
-SPOTIFY_PLAYLIST_NAME = 'kpop'
-
-new_playlist_id = sp.user_playlist_create(sp_user_id, SPOTIFY_PLAYLIST_NAME, public=False)["id"]
+new_playlist_id = sp.user_playlist_create(
+    sp_user_id, SPOTIFY_PLAYLIST_NAME, public=False
+)["id"]
 
 uris_to_add = []
 songs_not_found = []
+SEARCH_URL = "https://api.spotify.com/v1/search"
 
 for track in playlist:
-    title, artist = track['title'], track['artist']
-    search_url = "https://api.spotify.com/v1/search"
+    title, artist = track["title"], track["artist"]
     query = f"track:{title} artist:{artist}"
     params = {
-        'q': query,
-        'type': 'track',
-        'market': 'US',
-        'limit': 10,
+        "q": query,
+        "type": "track",
+        "market": "US",
+        "limit": 10,
     }
-    track_items = sp.search(params['q'], limit=params['limit'], type=params['type'], market=params['market'])["tracks"]["items"]
+    track_items = sp.search(
+        params["q"], limit=params["limit"], type=params["type"], market=params["market"]
+    )["tracks"]["items"]
     if not track_items:
         songs_not_found.append(f"{title} {artist}")
         continue
