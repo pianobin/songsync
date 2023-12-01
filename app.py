@@ -59,12 +59,15 @@ for track in playlist:
     params = {
         "q": query,
         "type": "track",
-        "market": "US",
         "limit": 10,
     }
     track_items = sp.search(
-        params["q"], limit=params["limit"], type=params["type"], market=params["market"]
-    )["tracks"]["items"]
+        params["q"],
+        limit=params["limit"],
+        type=params["type"],
+    )[
+        "tracks"
+    ]["items"]
     if not track_items:
         songs_not_found.append(f"{title} {artist}")
         continue
