@@ -27,9 +27,6 @@ args = parser.parse_args()
 yt_playlist_id = args.yt_playlist_id
 spotify_playlist_name = args.spotify_playlist_name
 
-# YT_PLAYLIST_ID = "PLwjEXrvFo-2CqNmxxKYRIwObfWnn0soiA"
-# SPOTIFY_PLAYLIST_NAME = "kpop"
-
 ytmusic = YTMusic()
 
 tracks = ytmusic.get_playlist(yt_playlist_id)["tracks"]
