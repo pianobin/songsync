@@ -2,7 +2,6 @@
 import argparse
 import dataclasses
 import json
-import re
 from ytmusicapi import YTMusic
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
