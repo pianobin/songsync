@@ -30,7 +30,7 @@ export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 
 ## Run
 
-The YT playlist ID can be found from the URL of your Youtube/Youtube Music playlist. The YT playlist must be public/unlisted. Run the script:
+The YT playlist ID can be found from the URL of your Youtube/Youtube Music playlist. The YT playlist must be public or unlisted. Run the script and replace `yt_playlist_id` and `spotify_playlist_name` with your YouTube playlist ID and what you'd like to name the Spotify playlist:
 
 ```
 python3 examples/convert_yt_to_spotify_playlist.py --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist"
