@@ -55,7 +55,7 @@ def auth_to_spotify() -> Spotify:
 
 
 def search_spotify_track(title: str, artist: str, sp: Spotify) -> str | None:
-    """Search Spotify for a track that matches the provided title and artist
+    """Search Spotify for a track that matches the queried title and artist
 
     Args:
         title (str): Spotify track title
@@ -82,7 +82,7 @@ def search_spotify_track(title: str, artist: str, sp: Spotify) -> str | None:
 
 
 def create_spotify_playlist(playlist: list[YTSong], new_playlist_name: str):
-    """create a Spotify playlist with the provided name from a YouTube playlist
+    """create a Spotify playlist with the given name from a YouTube playlist
 
     Args:
         playlist (list[YTSong]): YouTube playlist to convert to Spotify
