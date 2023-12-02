@@ -121,7 +121,7 @@ def create_spotify_playlist(playlist: list[YTSong], new_playlist_name: str):
             uris_to_add.append(track_uri)
 
     sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add)
-    print("Added", json.dumps(uris_to_add, indent=4, ensure_ascii=False))
+    print(f"Created new Spotify playlist {new_playlist_name}")
     print("Couldn't find", json.dumps(tracks_not_found, indent=4, ensure_ascii=False))
 
 
