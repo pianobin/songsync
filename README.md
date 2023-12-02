@@ -30,7 +30,7 @@ export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 
 ## Usage
 
-Run the script and replace `yt_playlist_id` and `spotify_playlist_name` with your YouTube playlist ID and what you'd like to name the Spotify playlist.
+Run the script and set `yt_playlist_id` and `spotify_playlist_name` to your YouTube playlist ID and what you'd like to name the Spotify playlist.
 
 Notes:
 
