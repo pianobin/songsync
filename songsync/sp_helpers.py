@@ -1,40 +1,8 @@
-"""Module converting YouTube playlists to Spotify playlists"""
-import argparse
-import dataclasses
+"""Spotify helper functions"""
 import json
-from ytmusicapi import YTMusic
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
-
-
-@dataclasses.dataclass
-class YTSong:
-    """Class representing a YouTube track"""
-
-    title: str
-    artist: str
-
-
-def get_yt_playlist(playlist_id: str) -> list[YTSong]:
-    """fetch and parse playlist from YouTube
-
-    Args:
-        playlist_id (str): YouTube playlist ID
-
-    Returns:
-        list[YTSong]: list of YouTube tracks
-    """
-    ytmusic = YTMusic()
-
-    tracks = ytmusic.get_playlist(playlist_id)["tracks"]
-
-    playlist = []
-    for track in tracks:
-        title = track["title"]
-        artist = track["artists"][0]["name"]
-        playlist.append({"title": title, "artist": artist})
-    print(f"Parsed {len(playlist)} YT tracks")
-    return playlist
+from songsync.yt_helpers import YTSong
 
 
 def auth_to_spotify() -> Spotify:
@@ -81,12 +49,15 @@ def search_spotify_track(title: str, artist: str, sp: Spotify) -> str | None:
     return track_items[0]["uri"]
 
 
-def create_spotify_playlist(playlist: list[YTSong], new_playlist_name: str):
+def create_spotify_playlist(
+    playlist: list[YTSong], new_playlist_name: str, interactive_mode: bool
+):
     """create a Spotify playlist with the given name from a YouTube playlist
 
     Args:
         playlist (list[YTSong]): YouTube playlist to convert to Spotify
         new_playlist_name (str): Spotify playlist name to be created
+        interactive_mode (bool): If true, support manually adding songs that can't be found
     """
     sp = auth_to_spotify()
     sp_user_id = sp.current_user()["id"]
@@ -101,13 +72,12 @@ def create_spotify_playlist(playlist: list[YTSong], new_playlist_name: str):
     for index, track in enumerate(playlist):
         title, artist = track["title"], track["artist"]
         track_uri = search_spotify_track(title, artist, sp)
-        while not track_uri:
+        while not track_uri and interactive_mode:
             user_input = input(
                 f"({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in Spotify US to search again (or enter blank to skip): "
             )
             if not user_input:
                 print("Skipping.")
-                tracks_not_found.append(f"{title} - {artist}")
                 break
             user_input_parts = user_input.split(",", 1)
             if len(user_input_parts) != 2:
@@ -118,34 +88,12 @@ def create_spotify_playlist(playlist: list[YTSong], new_playlist_name: str):
         if track_uri:
             print(f"({index+1}/{len(playlist)}) Found {title} - {artist}: {track_uri}")
             uris_to_add.append(track_uri)
+        else:
+            tracks_not_found.append(f"{title} - {artist}")
 
     sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add)
     print(f"Created new Spotify playlist {new_playlist_name}")
-    print("Couldn't find", json.dumps(tracks_not_found, indent=4, ensure_ascii=False))
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="songsync")
-
-    parser.add_argument(
-        "--yt_playlist_id",
-        required=True,
-        type=str,
-        help="YT playlist ID to be converted to Spotify",
-    )
-    parser.add_argument(
-        "--spotify_playlist_name",
-        required=True,
-        type=str,
-        help="Name of Spotify playlist to create",
-    )
-
-    args = parser.parse_args()
-
-    yt_playlist_id = args.yt_playlist_id
-    spotify_playlist_name = args.spotify_playlist_name
-
-    yt_playlist = get_yt_playlist(playlist_id=yt_playlist_id)
-    create_spotify_playlist(
-        playlist=yt_playlist, new_playlist_name=spotify_playlist_name
+    print(
+        "Could not find the following tracks",
+        json.dumps(tracks_not_found, indent=4, ensure_ascii=False),
     )

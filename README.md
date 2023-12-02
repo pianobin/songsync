@@ -33,7 +33,15 @@ export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 The YT playlist ID can be found from the URL of your Youtube/Youtube Music playlist. The YT playlist must be public/unlisted. Run the script:
 
 ```
-python3 app.py --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist"
+python3 examples/convert_yt_to_spotify_playlist.py --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist"
 ```
 
-If the script cannot find the YouTube track on Spotify, you will be prompted to manually enter a title and artist as it would appear on the Spotify US market. You can enter blank in the prompt to skip.
+For interactive mode, include the `--interactive` flag.
+
+Example:
+
+```
+python3 examples/convert_yt_to_spotify_playlist.py --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist" --interactive
+```
+
+In interactive mode, if the script cannot find the YouTube track on Spotify you will be prompted to manually enter a title and artist. Enter it as it would appear on the Spotify US market. You can enter blank in the prompt to skip.
