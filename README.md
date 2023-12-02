@@ -1,4 +1,4 @@
-# songsync (WIP)
+# songsync
 
 Convert YT playlists to Spotify playlists
 
@@ -35,3 +35,5 @@ The YT playlist ID can be found from the URL of your Youtube/Youtube Music playl
 ```
 python3 app.py --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist"
 ```
+
+If the script cannot find the YouTube track on Spotify, you will be prompted to manually enter a title and artist as it would appear on the Spotify US market. You can enter blank in the prompt to skip.
