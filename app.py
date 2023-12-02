@@ -106,7 +106,7 @@ def create_spotify_playlist(playlist: list[YTSong], new_playlist_name: str):
                 f"({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in Spotify US to search again (or enter blank to skip): "
             )
             if not user_input:
-                print("Skipping")
+                print("Skipping.")
                 tracks_not_found.append(f"{title} - {artist}")
                 break
             user_input_parts = user_input.split(",", 1)
