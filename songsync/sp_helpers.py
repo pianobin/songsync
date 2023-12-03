@@ -1,7 +1,8 @@
 """Spotify helper functions"""
 import json
-from spotipy import Spotify
+from spotipy import Spotify, SpotifyException
 from spotipy.oauth2 import SpotifyOAuth
+from songsync.lang_helpers import get_country_codes_from_text, split_text_by_language
 from songsync.yt_helpers import YTSong
 
 
@@ -22,31 +23,60 @@ def auth_to_spotify() -> Spotify:
     return Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 
-def search_spotify_track(title: str, artist: str, sp: Spotify) -> str | None:
+def search_spotify_track(
+    title: str, artist: str, sp: Spotify, market: str = None
+) -> str | None:
     """Search Spotify for a track that matches the queried title and artist
 
     Args:
         title (str): Spotify track title
         artist (str): Spotify track artist
         sp (Spotify): Spotify object
+        market (str, optional): Spotify market, defaults to user's market if None
 
     Returns:
         str | None: Spotify track uri or None if not found
     """
     query = f"track:{title} artist:{artist}"
-    params = {
-        "q": query,
-        "type": "track",
-    }
-    track_items = sp.search(
-        params["q"],
-        type=params["type"],
-    )[
-        "tracks"
-    ]["items"]
-    if not track_items:
+    params = {"q": query, "type": "track", "market": market}
+    try:
+        track_items = sp.search(
+            params["q"],
+            type=params["type"],
+            market=params["market"],
+        )["tracks"]["items"]
+        if not track_items:
+            return None
+        return track_items[0]["uri"]
+    except SpotifyException as e:
+        print(f"❌ Error adding track {e.msg}")
         return None
-    return track_items[0]["uri"]
+
+
+def search_spotify_track_from_markets(
+    title: str, artist: str, sp: Spotify, markets: list[str] = None
+) -> str | None:
+    """Wrapper for search_spotify_track, return the first result from results in the listed markets
+
+    Args:
+        title (str): Spotify track title
+        artist (str): Spotify track artist
+        sp (Spotify): Spotify object
+        markets (list[str], optional): Spotify markets to search
+
+    Returns:
+        str | None: First Spotify track uri or None if not found
+    """
+    if not markets:
+        print(f"Searching for {title} - {artist} in the user's market")
+        return search_spotify_track(title=title, artist=artist, sp=sp)
+    print(f"Searching for {title} - {artist} in the following markets: {markets}")
+    for market in markets:
+        track_uri = search_spotify_track(
+            title=title, artist=artist, sp=sp, market=market
+        )
+        if track_uri:
+            return track_uri
 
 
 def create_spotify_playlist(
@@ -71,10 +101,21 @@ def create_spotify_playlist(
 
     for index, track in enumerate(playlist):
         title, artist = track["title"], track["artist"]
-        track_uri = search_spotify_track(title, artist, sp)
+        title_substrings = split_text_by_language(title)
+        titles_to_check = [title] + title_substrings
+        for title_to_check in titles_to_check:
+            markets = list(
+                get_country_codes_from_text(title_to_check)
+                | get_country_codes_from_text(title_to_check)
+            )
+            track_uri = search_spotify_track_from_markets(
+                title_to_check, artist, sp, markets
+            )
+            if track_uri:
+                break
         while not track_uri and interactive_mode:
             user_input = input(
-                f"({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in Spotify US to search again (or enter blank to skip): "
+                f"❌ ({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in Spotify US to search again (or enter blank to skip): "
             )
             if not user_input:
                 print("Skipping.")
@@ -84,16 +125,19 @@ def create_spotify_playlist(
                 print("Could not parse input.")
                 continue
             title, artist = user_input_parts[0], user_input_parts[1]
-            track_uri = search_spotify_track(title, artist, sp)
+            track_uri = search_spotify_track_from_markets(title, artist, sp, markets)
         if track_uri:
-            print(f"({index+1}/{len(playlist)}) Found {title} - {artist}: {track_uri}")
+            print(
+                f"✅ ({index+1}/{len(playlist)}) Found {title} - {artist}: {track_uri}"
+            )
             uris_to_add.append(track_uri)
         else:
+            print(f"❌ ({index+1}/{len(playlist)}) Not Found {title} - {artist}")
             tracks_not_found.append(f"{title} - {artist}")
 
     sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add)
-    print(f"Created new Spotify playlist {new_playlist_name}")
     print(
-        "Could not find the following tracks",
+        "❌ Could not find the following tracks",
         json.dumps(tracks_not_found, indent=4, ensure_ascii=False),
     )
+    print(f"🎉 Created new Spotify playlist {new_playlist_name}")
