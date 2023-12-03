@@ -36,6 +36,8 @@ Notes:
 
 - The YT playlist ID can be found from the URL of your Youtube/Youtube Music playlist.
 - The YT playlist must be public or unlisted.
+- The search algorithm uses language detection to search different Spotify markets and substrings of a song title.
+  - Titles are more varied for normal YouTube videos in comparison to YouTube Music videos which can increase the difficulty of the search. The closer the YouTube video name is to the Spotify name the easier it is to find. See interactive mode below for manually searching tracks that cannot be found.
 
 Example:
 
