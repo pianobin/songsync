@@ -135,7 +135,15 @@ def create_spotify_playlist(
             print(f"❌ ({index+1}/{len(playlist)}) Not Found {title} - {artist}")
             tracks_not_found.append(f"{title} - {artist}")
 
-    sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add)
+    # Spotify only allows adding 100 tracks per request, iterate in chunks of 100
+    step_count = 100
+    for index in range(0, len(uris_to_add), step_count):
+        end = (
+            index + step_count
+            if index + step_count <= len(uris_to_add)
+            else len(uris_to_add)
+        )
+        sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add[index:end])
     print(
         "❌ Could not find the following tracks",
         json.dumps(tracks_not_found, indent=4, ensure_ascii=False),

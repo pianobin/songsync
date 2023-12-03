@@ -22,7 +22,8 @@ def get_yt_playlist(playlist_id: str) -> list[YTSong]:
     """
     ytmusic = YTMusic()
 
-    tracks = ytmusic.get_playlist(playlist_id)["tracks"]
+    # Max size of a YouTube playlist is 5000
+    tracks = ytmusic.get_playlist(playlist_id, limit=5000)["tracks"]
 
     playlist = []
     for track in tracks:
