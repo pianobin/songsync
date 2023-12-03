@@ -3,13 +3,15 @@ import re
 import langid
 
 # Mapping of ISO 639-1 language codes to ISO 3166-1 alpha-2 country codes
+# List of ISO 639-1 codes: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+# List of ISO 3166-1 alpha-2 codes: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 LANG_TO_COUNTRY_MAP = {
     "en": ["US", "GB"],
     "es": ["ES"],
     "fr": ["FR"],
     "de": ["DE"],
     "ru": ["RU"],
-    # Spotify does not exist in China
+    # Note: Spotify does not have a market in China
     "zh": ["TW", "SG"],
     "ko": ["KR"],
     "ja": ["JP"],
