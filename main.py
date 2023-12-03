@@ -1,11 +1,4 @@
 """Convert YT to Spotify playlist"""
-import sys
-import os
-
-# TODO: Remove this when package is published
-# Add the root directory to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 import argparse
 from songsync.songsync import SongSync
 

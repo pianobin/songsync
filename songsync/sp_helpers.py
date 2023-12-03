@@ -144,8 +144,9 @@ def create_spotify_playlist(
             else len(uris_to_add)
         )
         sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add[index:end])
-    print(
-        "❌ Could not find the following tracks",
-        json.dumps(tracks_not_found, indent=4, ensure_ascii=False),
-    )
+    if tracks_not_found:
+        print(
+            "❌ Could not find the following tracks",
+            json.dumps(tracks_not_found, indent=4, ensure_ascii=False),
+        )
     print(f"🎉 Created new Spotify playlist {new_playlist_name}")
