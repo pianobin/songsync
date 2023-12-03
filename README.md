@@ -1,6 +1,6 @@
 # songsync
 
-Convert YT playlists to Spotify playlists
+Convert YouTube and YouTube Music playlists to Spotify playlists
 
 ## Setup
 
