@@ -42,8 +42,7 @@ Notes:
 Example:
 
 ```
-./songsync_cmd.sh --yt_playlist_id P
-LwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist"
+./songsync_cmd.sh --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist"
 ```
 
 For interactive mode, include the `--interactive` flag.
@@ -51,8 +50,7 @@ For interactive mode, include the `--interactive` flag.
 Example:
 
 ```
-./songsync_cmd.sh --yt_playlist_id P
-LwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist" --interactive
+./songsync_cmd.sh --yt_playlist_id PLwjEXrvFo-2Bs1-hvfjQ_G61COZ0aBTK5 --spotify_playlist_name "My Playlist" --interactive
 ```
 
 In interactive mode, if the script cannot find the YouTube track on Spotify you will be prompted to manually enter a title and artist. Enter it as it would appear in your country. You can enter blank in the prompt to skip.
