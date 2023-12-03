@@ -9,6 +9,12 @@ show_help() {
     echo "  --interactive: Enable interactive mode"
 }
 
+# Check required environment variables
+if [ -z "$SPOTIPY_CLIENT_ID" ] || [ -z "$SPOTIPY_CLIENT_SECRET" ] || [ -z "$SPOTIPY_REDIRECT_URI" ]; then
+    echo "Error: Environment Variables SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, and SPOTIPY_REDIRECT_URI must be set."
+    exit 1
+fi
+
 # Default interactive mode to false
 interactive_mode=false
 
