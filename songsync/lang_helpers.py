@@ -87,7 +87,7 @@ def split_text_by_language(text: str):
     Returns:
         list[str]: Substrings of text divided by language
     """
-    # Remove everything after feat. since the track name is often before feat. in the title)
+    # Remove everything after feat. since the track name is often before artist features in the title)
     text = text.split("feat.")[0]
 
     cleaned_text = re.sub(r"[\(\)\[\]「」【】]", "", text)
