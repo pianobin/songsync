@@ -22,6 +22,8 @@ export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 
 ## Usage
 
+To convert a playlist from YouTube to Spotify, provide the playlist ID of the YouTube playlist and the name of the playlist you want to create in Spotify.
+
 ```python
 from songsync.songsync import SongSync
 
