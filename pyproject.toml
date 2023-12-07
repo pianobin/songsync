@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "songsync"
-version = "0.1.1"
+version = "0.1.2"
 description = "Convert YouTube playlists to Spotify playlists"
 authors = ["pianobin <shoji@pianobin.com>"]
 readme = "README.md"

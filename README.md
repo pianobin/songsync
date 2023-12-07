@@ -24,7 +24,7 @@ export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 from songsync.songsync import SongSync
 
 ss = SongSync()
-ss.convert_yt_spotify(
+spotify_playlist_id, tracks_not_found = ss.convert_yt_spotify(
     yt_playlist_id="PLkZa6xWYS81W6wdF6HSpuqOuVCgu9mzjD",
     spotify_playlist_name="Your Spotify Playlist Name",
 )

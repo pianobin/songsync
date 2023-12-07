@@ -19,8 +19,9 @@ class SongSync:
         """
         yt_playlist = yt_helpers.get_yt_playlist(playlist_id=yt_playlist_id)
 
-        sp_helpers.create_spotify_playlist(
+        spotify_playlist_id, tracks_not_found = sp_helpers.create_spotify_playlist(
             playlist=yt_playlist,
             new_playlist_name=spotify_playlist_name,
             interactive_mode=self.interactive_mode,
         )
+        return spotify_playlist_id, tracks_not_found
