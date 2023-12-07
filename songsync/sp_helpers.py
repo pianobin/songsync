@@ -26,17 +26,6 @@ def auth_to_spotify() -> Spotify:
 def search_spotify_track(
     title: str, artist: str, sp: Spotify, market: str = None
 ) -> str | None:
-    """Search Spotify for a track that matches the queried title and artist
-
-    Args:
-        title (str): Spotify track title
-        artist (str): Spotify track artist
-        sp (Spotify): Spotify object
-        market (str, optional): Spotify market, defaults to user's market if None
-
-    Returns:
-        str | None: Spotify track uri or None if not found
-    """
     query = f"track:{title} artist:{artist}"
     params = {"q": query, "type": "track", "market": market}
     try:
@@ -91,6 +80,7 @@ def create_spotify_playlist(
 
     Returns:
         str: id of created Spotify playlist
+        list[str]: tracks not found
     """
     sp = auth_to_spotify()
     sp_user_id = sp.current_user()["id"]

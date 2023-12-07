@@ -10,12 +10,16 @@ class SongSync:
 
     def convert_yt_spotify(
         self, yt_playlist_id: str, spotify_playlist_name: str
-    ) -> None:
+    ) -> (str, list[str]):
         """convert YT playlist to Spotify playlist
 
         Args:
             yt_playlist_id (str): YouTube playlist ID
             spotify_playlist_name (str): Spotify playlist name
+
+        Returns:
+            str: id of created Spotify playlist
+            list[str]: tracks not found
         """
         yt_playlist = yt_helpers.get_yt_playlist(playlist_id=yt_playlist_id)
 
