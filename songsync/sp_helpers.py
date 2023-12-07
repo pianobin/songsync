@@ -48,8 +48,8 @@ def search_spotify_track(
         if not track_items:
             return None
         return track_items[0]["uri"]
-    except SpotifyException as e:
-        print(f"❌ Error adding track {e.msg}")
+    except SpotifyException:
+        # Error adding track
         return None
 
 
@@ -68,9 +68,9 @@ def search_spotify_track_from_markets(
         str | None: First Spotify track uri or None if not found
     """
     if not markets:
-        print(f"Searching for {title} - {artist} in the user's market")
+        # Searching for track in the user's market
         return search_spotify_track(title=title, artist=artist, sp=sp)
-    print(f"Searching for {title} - {artist} in the following markets: {markets}")
+    # Searching for track in markets
     for market in markets:
         track_uri = search_spotify_track(
             title=title, artist=artist, sp=sp, market=market
@@ -81,13 +81,16 @@ def search_spotify_track_from_markets(
 
 def create_spotify_playlist(
     playlist: list[YTSong], new_playlist_name: str, interactive_mode: bool
-):
+) -> (str, list[str]):
     """create a Spotify playlist with the given name from a YouTube playlist
 
     Args:
         playlist (list[YTSong]): YouTube playlist to convert to Spotify
         new_playlist_name (str): Spotify playlist name to be created
         interactive_mode (bool): If true, support manually adding songs that can't be found
+
+    Returns:
+        str: id of created Spotify playlist
     """
     sp = auth_to_spotify()
     sp_user_id = sp.current_user()["id"]
@@ -117,22 +120,20 @@ def create_spotify_playlist(
             user_input = input(
                 f"❌ ({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in Spotify US to search again (or enter blank to skip): "
             )
+            # No input, skipping
             if not user_input:
-                print("Skipping.")
                 break
             user_input_parts = user_input.split(",", 1)
+            # Could not parse input
             if len(user_input_parts) != 2:
-                print("Could not parse input.")
                 continue
             title, artist = user_input_parts[0], user_input_parts[1]
             track_uri = search_spotify_track_from_markets(title, artist, sp, markets)
         if track_uri:
-            print(
-                f"✅ ({index+1}/{len(playlist)}) Found {title} - {artist}: {track_uri}"
-            )
+            # Track found
             uris_to_add.append(track_uri)
         else:
-            print(f"❌ ({index+1}/{len(playlist)}) Not Found {title} - {artist}")
+            # Track not found
             tracks_not_found.append(f"{title} - {artist}")
 
     # Spotify only allows adding 100 tracks per request, iterate in chunks of 100
@@ -144,9 +145,4 @@ def create_spotify_playlist(
             else len(uris_to_add)
         )
         sp.user_playlist_add_tracks(sp_user_id, new_playlist_id, uris_to_add[index:end])
-    if tracks_not_found:
-        print(
-            "❌ Could not find the following tracks",
-            json.dumps(tracks_not_found, indent=4, ensure_ascii=False),
-        )
-    print(f"🎉 Created new Spotify playlist {new_playlist_name}")
+    return new_playlist_id, tracks_not_found

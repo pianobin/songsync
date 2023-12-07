@@ -30,5 +30,4 @@ def get_yt_playlist(playlist_id: str) -> list[YTSong]:
         title = track["title"]
         artist = track["artists"][0]["name"]
         playlist.append({"title": title, "artist": artist})
-    print(f"Parsed {len(playlist)} YT tracks")
     return playlist
