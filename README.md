@@ -1,5 +1,7 @@
 # songsync
 
+[![PyPI version](https://badge.fury.io/py/songsync.svg)](https://badge.fury.io/py/songsync)
+
 Convert YouTube and YouTube Music playlists to Spotify playlists
 
 ## Installation
