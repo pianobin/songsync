@@ -108,7 +108,7 @@ def create_spotify_playlist(
                 break
         while not track_uri and interactive_mode:
             user_input = input(
-                f"❌ ({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in Spotify US to search again (or enter blank to skip): "
+                f"❌ ({index+1}/{len(playlist)}) Unable to find [title] {title} [artist] {artist}\nPlease enter a title and artist comma-separated as it would appear in your country to search again (or enter blank to skip): "
             )
             # No input, skipping
             if not user_input:
